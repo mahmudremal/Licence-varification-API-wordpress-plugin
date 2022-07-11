@@ -1,0 +1,10 @@
+RewriteEngine ON
+RewriteCond %{QUERY_STRING} ^$
+RewriteCond %{THE_REQUEST} /v1/licenses/([^/]*)/([^/]*)/verify/([^/]*)/?\s 
+RewriteRule ^(.*) /index.php?product=%1&license_key=%2&%3=true [NE,L,NC]
+
+
+
+# https://api.futurewordpress.com/v1/licenses/fiverr.chrome/53e1270541f5-647d56531df2451bb783688768173855/verify/json/
+# C:\xampp\htdocs\futurewordpress.com\api\v2\licenses\verify
+# ftp://futurewordpress.com/public_html/api/
