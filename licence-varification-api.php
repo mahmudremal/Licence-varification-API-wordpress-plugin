@@ -79,3 +79,4 @@ if ( ! defined( 'LICENCE_VERIFICATION_API_SEARCH_RESULTS_POST_PER_PAGE' ) ) {
 if( is_admin() ) {
   require_once LICENCE_VERIFICATION_API_DIR_PATH . '/admin.php';
 }
+require_once LICENCE_VERIFICATION_API_DIR_PATH . '/public.php';

@@ -11,9 +11,9 @@ $output = [];
 	// $_GET = ( isset( $_GET[ 'product' ] ) || isset( $_GET[ 'product_id' ] ) ) ? $_GET : (
 		// ( isset( $_GET[ 'product' ] ) || isset( $_GET[ 'product_id' ] ) ) ? $_GET : []
 	// );
-	// futurewo_licenses
+	
 	try {
-	  $conn = new PDO("mysql:host=localhost;dbname=mujah_wp-4", 'futurewo', 'DA#U)tv92D6f3q');
+	  $conn = new PDO("mysql:host=localhost;dbname=futurewo_main", 'futurewo_licenses', '4d/b2kw;F%fg');
 	  // set the PDO error mode to exception
 	  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	  

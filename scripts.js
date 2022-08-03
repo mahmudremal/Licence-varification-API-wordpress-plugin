@@ -73,11 +73,10 @@ window.licenceStatus = function( action, id, that ) {
 
 
 
-jQuery( document ).on( 'ready', function() {
-  // jQuery( "input[data-type=switch]" ).bootstrapSwitch( {
-  //   onSwitchChange: function( e, state ) { 
-  //       console.log(state);
-  //   }
-  // } );
-  
-} );
+// jQuery( document ).on( 'ready', function() {
+//   jQuery( "input[data-type=switch]" ).bootstrapSwitch( {
+//     onSwitchChange: function( e, state ) { 
+//         console.log(state);
+//     }
+//   } );
+// } );

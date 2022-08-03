@@ -19,8 +19,8 @@ class LICENCE_VERIFICATION_API_ADMIN {
         add_action( 'admin_init', [ $this, 'style' ] );
         add_action( 'admin_init', [ $this, 'scripts' ] );
         add_action( 'admin_post_save_new_licence_api', [ $this, 'save' ] );
-        add_action( 'wp_ajax_licence_verification_api_status_toggle', [ $this, 'toggle' ] );
-        add_action( 'wp_ajax_nopriv_licence_verification_api_status_toggle', [ $this, 'toggle' ] );
+        // add_action( 'wp_ajax_licence_verification_api_status_toggle', [ $this, 'toggle' ] );
+        // add_action( 'wp_ajax_nopriv_licence_verification_api_status_toggle', [ $this, 'toggle' ] );
         add_action( 'wp_ajax_licence_verification_api_remove', [ $this, 'delete' ] );
         add_action( 'wp_ajax_nopriv_licence_verification_api_remove', [ $this, 'delete' ] );
     }
@@ -175,17 +175,24 @@ class LICENCE_VERIFICATION_API_ADMIN {
         <?php
     }
     public function edit() {
-        global $wpdb;$data = [];
+        global $wpdb;$data = [];$is_edit = false;
         if( isset( $_GET[ 'id' ] ) ) {
             $edit = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM licenses WHERE ID = %s", $_GET[ 'id' ] ), ARRAY_A );
             if( $edit && count( $edit ) >= 1 || isset( $edit[ 'SRL' ] ) ) {
                 $data = $edit;
+                $is_edit = true;
             }
         }
         // print_r( $data );
         ?>
         <form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="table-form data-form" method="POST">
             <?php wp_nonce_field( 'save_new_licence_api', 'save_new_licence_api_nonce', true, true ); ?>
+            <?php
+            if( $is_edit ) {
+                ?>
+                <input type="hidden" name="is_edit" value="<?php echo esc_attr( $data[ 'SRL' ] ); ?>">
+                <?php
+            } ?>
             <div class="row">
                 <div class="col-lg-6">
                     <h5 class="mb-3">Details</h5>
@@ -293,9 +300,14 @@ class LICENCE_VERIFICATION_API_ADMIN {
             'name' => '','email' => '','social' => '','package' => 0,'product' => '','ID' => rand( 0, 99999999999 ),'status' => 0,'label' => 0,'API' => '','comments' => ''
         ] );
         $wpdb->query(
+            ( ! isset( $_POST[ 'is_edit' ] ) || empty( $_POST[ 'is_edit' ] ) ) ? 
             $wpdb->prepare(
                 "INSERT INTO licenses SET fullname = %s, email = %s, social = %s, lc_type = %s, product = %s, ID = %s, lc_status = %s, label = %s, API = %s, comments = %s",
                 $licence[ 'name' ], $licence[ 'email' ], $licence[ 'social' ], $licence[ 'package' ], $licence[ 'product' ], $licence[ 'ID' ], $licence[ 'status' ], $licence[ 'label' ], $licence[ 'API' ], $licence[ 'comments' ]
+            ) :
+            $wpdb->prepare(
+                "UPDATE licenses SET fullname = %s, email = %s, social = %s, lc_type = %s, product = %s, ID = %s, lc_status = %s, label = %s, API = %s, comments = %s WHERE SRL = %s",
+                $licence[ 'name' ], $licence[ 'email' ], $licence[ 'social' ], $licence[ 'package' ], $licence[ 'product' ], $licence[ 'ID' ], $licence[ 'status' ], $licence[ 'label' ], $licence[ 'API' ], $licence[ 'comments' ], $_POST[ 'is_edit' ]
             )
         );
         // print_r( $_POST );wp_die( 'Form detected' );
